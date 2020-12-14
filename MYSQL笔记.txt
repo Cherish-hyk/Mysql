@@ -1,0 +1,223 @@
+查看当前所有的数据库：  show databases;
+打开指定的库：  use+库名
+查看当前库的所有表：  show tables;
+查看其他库的所有表：  show tables from + 库名；
+创建表：  create table +表名（列名 列类型，列名 列类型）；
+查看表结构：  desc+表名；
+查看服务器版本：  select version();
+mysql--version
+mysql--V
+查看表数据： select *from 表名；
+查看表内数据： select 数据名 from 表名；
+查看时不重复显示：  select distinct 数据名 from 表名；
+拼接字符： concat()
+order by 数据名 asc 升序
+order by 数据名 desc 降序     通常放在语句最后面， limit除外
+求字符串长度 length(字符串)
+包含字节 like '%x%'   '__X'
+查看字符级  show variables like '%char%'
+变大写： upper()
+变小写： lower()
+rand()  0-1之间的随机值
+substr  substring（字符串，索引号）截取从指定索引处后面所有字符
+substr  substring（字符串，索引号，n）截取从指定索引处后面n个字符
+instr  返回子串第一次出现的索引号，找不到返回0
+trim（字符串） 去掉字符串前后的空格
+trim（字符 from 字符串）去掉字符串前后的字符
+LPAD（字符串，长度，填充字符）字符串小于长度时，用填充字符补充字符串的前面
+RPAD（字符串，长度，填充字符）字符串小于长度时，用填充字符补充字符串的后面
+replace（字符串，字符1，字符2） 用字符2替换字符串中的字符1
+round（）小数的四舍五入
+round（num,num1）小数点后保留num1个小数
+ceil（）向上取整
+floor（）向下取整
+truncate（小数，位数）小数点后保留几位小数
+mod（）取模
+now()返回当前时间
+curdate()只返回当前日期，不包含时间
+curtime()只返回当前时间，不包含日期
+year()  年
+month()月
+str_to_date  将字符转换为指定格式日期
+date_format()将日期转换为字符
+插入数据：  insert into 表名 列名（可省略） values(数据)  （对应插入）
+修改数据：  update 表名 set  原数据=新数据  where  条件
+删除数据：  delete  from 表名 where 条件
+删除所有数据： delete from 表名    truncate  table 表名
+
+库的创建： create database 库名   稳定  create database if not exists 库名
+库名修改： rename database 原库名 to 新库名
+修改库的字符集：  alter database 库名 character set 字符
+库的删除：  drop database （if exists） 库名
+
+表的创建： create table （if not exists）表名(
+列名 数据结构 【（长度） 约束】
+)
+修改列名  alter table 表名 chance column 原名 新名 数据结构
+修改列的类型或约束：  alter table 表名 modify column 列名 数据结构
+添加列或表级约束：  alter table 表名 add column 列名 数据结构
+删除列：  alter table 表名 drop column 列名
+修改表名： alter table 表名 rename to 新名
+表的删除： drop table （if exists）表名
+仅仅复制表的结构：  create table 新表名 like 已有表名
+复制表的结构和数据： create table 新表名 select * 已有表名（可加筛选）
+数据类型：
+               数值型： 整形: tinyint 1字节  smallint 2 mediumint 3 int 4 bigint 8  无符号后面加 unsigned   zerofill 显示宽度   
+                             小数：定点数:dec(m,d) decimal(m,d)默认 10，0
+                             浮点数：float(m,d)  double(m,d)     d 表示小数点后的位数      m表示总长度
+               字符型： 较短的文本：char（m）固定长度字符   m 可以省略，默认为1
+                                                 varchar（m）可变长度字符  m 表示字符数    
+                             较长的文本：text  blob
+               日期型：date  只有日期  time  只有时间   year 只有年
+                             timestamp  4字节 范围1970-2038 不受时区影响 
+                             datetime   8字节 范围1000-9999 不受时区影响     日期时间都有
+               枚举型： enum
+               set:类似枚举，但是可以一次选择多个
+约束：  not null 非空约束，保证该字段的值不能为空
+            default:默认，保证有默认值
+            primary key: 主键，用于保证该字段的值具有唯一性，并且非空
+            unique：唯一，用于保证该字段的值具有唯一性，可以为空
+            check:检查约束
+            foreign key:外键，用于限制两个表关系，保证该字段的值必须来自主表关联列的值，
+             在从表添加foreign key（列名）  REFERENCES   表名（列名）
+约束分类：  列级约束： 都可以，但是外键约束没有效果
+                   表级约束：除了非空，默认都支持 （consatraint  约束名 //修改名字，可以省略） 约束条件（字段名）
+修改表时添加约束：
+修改列约束：  alter table 表名 modify column 列名 数据结构 约束
+添加表级约束：  alter table 表名 add 约束（列名）
+修改表时删除约束：
+删除非空约束： alter table 表名 modify column 列名 数据结构 约束
+删除默认约束： alter table 表名 modify column 列名 数据结构 约束
+删除主键：alter table 表名 drop primary key
+删除唯一：alter table 表名 drop index 唯一键名
+删除外键：alter table 表名 drop foreign key 外键名
+设置标识列：  约束后加 auto_increment
+show engines:  查看mysql支持的存储引擎
+事务的属性（ACID）
+1、原子性 ：事务是一个不可分割的工作单位，要么都发生要么都不发生
+2、一致性：一个事务执行会是数据从一个一致状态转换到另一个一致状态
+3、隔离性：
+4、持久性：
+
+显示自动提交是否开启：show VARIABLES like 'autocommit'
+设置自动提交为禁用：  set autocommit=0
+start transaction 开始事务；
+commit  提交事务
+rollback  回滚食物
+事务的隔离级别：
+                                               脏读                  幻读                    不可重复读
+read uncommitted:                 √                          √                          √
+read committed                      ×                        √                             √
+repeatable read                       ×                        √                              ×
+serializable                                ×                        ×                                ×
+MySQL中默认第三个级别
+Oracle中默认第二个级别
+查看隔离级别： select @@tx_isolation
+设置隔离级别： set session/global  transaction isolation level 隔离级别
+
+设置保存点：savepoint 节点名
+回滚：rollback （to  a）
+
+视图创建： create view 视图名 as
+视图修改： create or replace view 视图名 as 语句/  alter view 视图名 as 语句
+删除视图： drop view 视图名
+查看视图：desc 视图名  /show create 视图名
+视图更新：对原始表也有影响
+                插入： insert into 视图名 列名（可省略） values(数据)  （对应插入）
+                修改数据：  update 视图名 set  原数据=新数据  where  条件
+                删除数据：  delete  from 视图名 where 条件
+                删除所有数据： delete from 视图名    truncate  table 表名
+视图不能更新条件：
+常量视图，包含group by having,  distinct，select中包含子查询，join ，from一个不能更新的视图，
+where的子查询中from表和from中的表一样     
+
+变量： 系统变量  ：全局变量   会话变量
+           自定义变量：用户变量  局部变量
+系统变量： 全局加global 会话加session 默认为会话
+查看所有系统变量： show global/session variables;
+查看满足条件的系统变量：show global/session variables like '%char%'
+查看指定的系统变量：select @@global/session ,系统变量名
+为系统变量赋值：
+set global/session 系统变量名=值
+set @@global/session ,系统变量名=值
+用户变量：
+声明并初始化：
+set @用户变量名=值；
+set @用户变量名：=值
+select @用户变量名：=值
+select 字段 into 变量名 from 表 
+使用（查看用户变量）select @用户变量名
+局部变量：
+声明： declare 变量名 类型（default  值）
+赋值：set 用户变量名=值；
+          set 用户变量名：=值
+          select @用户变量名：=值
+          select 字段 into 变量名 from 表 
+使用（查看用户变量）select 用户变量名
+存储过程：
+创建语法：
+create procedure 存储过程名（参数列表） begin 存储过程  end   存储过程语句只有一条使可以省略 begin end
+参数列表包括： 参数模式  参数名  参数类型
+参数模式 ： in 输入  out 输出 inout 即可以输入又可以输出
+调用： call 存储过程名（实参列表）
+delimiter 符号  重定义结束字符
+删除存储结构：drop procedure 存储过程名
+查看存储过程信息：show create procedure 存储过程名
+函数：
+创建：create function 函数名（参数列表）return 返回类型
+delimiter 符号  设置结束标记
+调用： select  函数名（参数列表）
+查看函数：show create function 函数名
+删除函数：drop function 函数名
+
+
+循环：while  loop   repeat
+
+iterate  类似于 continue
+leave 类似于break
+while:   
+[标签]while 循环条件 do
+循环体；
+end while
+
+loop:  
+[标签]loop
+循环体；
+end loop[标签];
+
+repeat
+[标签]repeat
+循环体
+until 结束循环条件
+end repeat;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
